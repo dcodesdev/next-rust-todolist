@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:server": "cd packages/server && cargo watch -q -c -x run",
+    "dev:ui": "cd packages/ui && pnpm dev",
+    "dev": "concurrently \"pnpm run dev:server\" \"pnpm run dev:ui\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
