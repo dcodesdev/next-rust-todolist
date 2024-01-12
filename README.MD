@@ -1,5 +1,11 @@
 # Next Rust Todo list app
 
+<!-- Logo centered -->
+
+<p align="center">
+  <img src="packages/ui/public/logo.png" alt="Next Rust Todo list app" width="300" />
+</p>
+
 This project is a simple todo list app written in Rust. It is a learning project for me to learn Rust.
 
 ## Run the app in development mode
