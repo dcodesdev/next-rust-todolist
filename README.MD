@@ -15,6 +15,18 @@ This project is a simple todo list app written in Rust. It is a learning project
 pnpm dev
 ```
 
+### Run server only
+
+```bash
+pnpm dev:server
+```
+
+### Run UI only
+
+```bash
+pnpm dev:ui
+```
+
 ## Progress
 
 ### Server
