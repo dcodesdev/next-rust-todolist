@@ -1,4 +1,5 @@
 mod app;
+mod routes;
 
 use dotenvy::dotenv;
 
