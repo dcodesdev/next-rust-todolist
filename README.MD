@@ -19,6 +19,8 @@ pnpm dev
 
 ### Server
 
+- [x] Authentication (JWT)
+- [x] Register/Login
 - [x] Create a todo list
 - [x] Add a todo item
 - [x] Remove a todo item
@@ -28,6 +30,7 @@ pnpm dev
 ### UI
 
 - [x] Home page
+- [x] Register/Login pages
 - [x] Create a todo list
 - [x] Add a todo item
 - [x] Remove a todo item
