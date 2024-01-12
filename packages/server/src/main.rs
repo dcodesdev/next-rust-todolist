@@ -1,7 +1,10 @@
+mod app;
+
 use dotenvy::dotenv;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     dotenv().ok();
 
-    println!("Hello, world!");
+    app::app().await;
 }
