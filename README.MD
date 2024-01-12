@@ -3,7 +3,8 @@
 <!-- Logo centered -->
 
 <p align="center">
-  <img src="packages/ui/public/logo.png" alt="Next Rust Todo list app" width="300" />
+  <img src="packages/ui/public/logo.png" alt="Next Rust Todo list app" width="300" style="border-radius: 30px;" />
+
 </p>
 
 This project is a simple todo list app written in Rust. It is a learning project for me to learn Rust.
