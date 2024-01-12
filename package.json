@@ -6,7 +6,7 @@
   "scripts": {
     "dev:server": "cd packages/server && cargo watch -q -c -x run",
     "dev:ui": "cd packages/ui && pnpm dev",
-    "dev": "concurrently \"pnpm run dev:server\" \"pnpm run dev:ui\""
+    "dev": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm dev:server\" \"pnpm dev:ui\""
   },
   "keywords": [],
   "author": "",
