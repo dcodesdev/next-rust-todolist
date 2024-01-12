@@ -1,4 +1,5 @@
-use axum::{http::StatusCode, Extension, Router};
+use crate::routes;
+use axum::{http::StatusCode, routing, Extension, Router};
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
@@ -28,9 +29,11 @@ pub async fn app() {
         .allow_origin(Any);
 
     let app: Router = Router::new()
+        .nest("/todos", routes::todos::totos_routes())
+        .nest("/user", routes::user::user_routes())
         .route(
             "/_health",
-            axum::routing::get(|| async { (StatusCode::OK, "OK") }),
+            routing::get(|| async { (StatusCode::OK, "OK") }),
         )
         .layer(state)
         .layer(cors);
