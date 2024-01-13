@@ -67,3 +67,65 @@ pub async fn register_user(
         message: "User registered successfully",
     }))
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LoginUserRequestBody {
+    email: String,
+    password: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct LoginUserResponse {
+    token: String,
+    message: &'static str,
+}
+
+pub async fn login_user(
+    Extension(state): Extension<AppState>,
+    Json(body): Json<LoginUserRequestBody>,
+) -> ApiResult<Json<LoginUserResponse>> {
+    let db = state.db;
+
+    // Get the user
+    let user = match sqlx::query!(
+        r#"
+        SELECT id, password
+        FROM users
+        WHERE email = $1
+        "#,
+        body.email
+    )
+    .fetch_one(&db)
+    .await
+    {
+        Ok(u) => u,
+        Err(_) => {
+            return Err(ApiError::NotFound);
+        }
+    };
+
+    // Verify the password
+    let valid = match utils::password::verify_password(&body.password, &user.password) {
+        Ok(v) => v,
+        Err(_) => {
+            return Err(ApiError::InternalServerError);
+        }
+    };
+
+    if !valid {
+        return Err(ApiError::BadRequest);
+    }
+
+    // Generate the token
+    let token = match utils::jwt::gen_jwt(user.id) {
+        Ok(t) => t,
+        Err(_) => {
+            return Err(ApiError::InternalServerError);
+        }
+    };
+
+    Ok(Json(LoginUserResponse {
+        token,
+        message: "success",
+    }))
+}
