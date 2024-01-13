@@ -61,6 +61,12 @@ This project is a simple todo list app written in Rust. It is a learning project
   pnpm dev:ui
   ```
 
+- Create a migration
+
+  ```bash
+  pnpm migrate:create "<migration-name>"
+  ```
+
 > Note: Sqlx requires the database to be running when compiling the Rust server, so make sure to run the postgres server before running `pnpm dev` or `pnpm dev:server`. To read more about sqlx and how to use it, check out the [sqlx docs](https://github.com/launchbadge/sqlx).
 
 ## Progress
