@@ -31,6 +31,7 @@ pub async fn app() {
     let app: Router = Router::new()
         .nest("/todos", routes::todos::todos_routes())
         .nest("/user", routes::user::user_routes())
+        .nest("/lists", routes::todo_lists::todo_lists_routes())
         .route(
             "/_health",
             routing::get(|| async { (StatusCode::OK, "OK") }),
