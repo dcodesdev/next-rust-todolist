@@ -3,6 +3,7 @@ mod error;
 mod middlewares;
 mod models;
 mod routes;
+mod utils;
 
 use dotenvy::dotenv;
 
