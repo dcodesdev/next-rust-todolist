@@ -1,10 +1,11 @@
 pub mod handlers;
 
-use axum::{routing::get, Router};
+use crate::middlewares;
+use axum::{middleware::from_fn, routing::get, Router};
 
+// [TODO]: Implement todos routes
 pub fn todos_routes() -> Router {
     Router::new()
-        // [TODO]: Implement todos routes
         .route("/", get(handlers::get_todos))
-    // .route("/:id", post().put().delete())
+        .layer(from_fn(middlewares::auth))
 }
