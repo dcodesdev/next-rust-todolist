@@ -6,7 +6,9 @@
   "scripts": {
     "dev:server": "cd packages/server && cargo watch -q -c -x run",
     "dev:ui": "cd packages/ui && pnpm dev",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm dev:server\" \"pnpm dev:ui\""
+    "dev": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm dev:server\" \"pnpm dev:ui\"",
+    "migrate:run": "cd packages/server && cargo sqlx migrate run",
+    "db:create": "cd packages/server && cargo sqlx database create"
   },
   "keywords": [],
   "author": "",
