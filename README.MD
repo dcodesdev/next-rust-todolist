@@ -69,21 +69,21 @@ This project is a simple todo list app written in Rust. It is a learning project
 
 - [x] Authentication (JWT)
 - [x] Register/Login
-- [x] Create a todo list
-- [x] Add a todo item
-- [x] Remove a todo item
-- [x] Mark a todo item as done
-- [x] Mark a todo item as not done
+- [ ] Create a todo list
+- [ ] Add a todo item
+- [ ] Remove a todo item
+- [ ] Mark a todo item as done
+- [ ] Mark a todo item as not done
 
 ### UI
 
-- [x] Home page
-- [x] Register/Login pages
-- [x] Create a todo list
-- [x] Add a todo item
-- [x] Remove a todo item
-- [x] Mark a todo item as done
-- [x] Mark a todo item as not done
+- [ ] Home page
+- [ ] Register/Login pages
+- [ ] Create a todo list
+- [ ] Add a todo item
+- [ ] Remove a todo item
+- [ ] Mark a todo item as done
+- [ ] Mark a todo item as not done
 
 ## Packages
 
