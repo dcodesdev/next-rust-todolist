@@ -5,7 +5,7 @@ use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Clone)]
-pub struct App {
+pub struct AppState {
     pub db: PgPool,
 }
 
@@ -20,7 +20,7 @@ pub async fn app() {
 
     println!("Connected to database");
 
-    let state = ServiceBuilder::new().layer(Extension(App { db }));
+    let state = ServiceBuilder::new().layer(Extension(AppState { db }));
 
     // [TODO]: Change this to only allow the frontend domain
     let cors = CorsLayer::new()
