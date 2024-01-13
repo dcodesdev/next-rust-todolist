@@ -25,6 +25,12 @@ This project is a simple todo list app written in Rust. It is a learning project
 
   Replace the `postgres` and `password` with your own postgres username and password and choose a database name of your choice.
 
+- Run a postgres server, the easiest way is to use docker:
+
+  ```bash
+  docker run --name postgres -e POSTGRES_PASSWORD=password -p 5432:5432 -d next-rust-todolist
+  ```
+
 - Create the database:
 
   ```bash
@@ -54,6 +60,8 @@ This project is a simple todo list app written in Rust. It is a learning project
   ```bash
   pnpm dev:ui
   ```
+
+> Note: Sqlx requires the database to be running when compiling the Rust server, so make sure to run the postgres server before running `pnpm dev` or `pnpm dev:server`. To read more about sqlx and how to use it, check out the [sqlx docs](https://github.com/launchbadge/sqlx).
 
 ## Progress
 
