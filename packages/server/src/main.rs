@@ -1,4 +1,6 @@
 mod app;
+mod error;
+mod middlewares;
 mod routes;
 
 use dotenvy::dotenv;
