@@ -11,7 +11,9 @@ pub fn todo_lists_routes() -> Router {
         )
         .route(
             "/:id",
-            put(handlers::update_todo_list).delete(handlers::delete_todo_list),
+            put(handlers::update_todo_list)
+                .delete(handlers::delete_todo_list)
+                .get(handlers::get_todo_list_details),
         )
         .layer(from_fn(crate::middlewares::auth))
 }

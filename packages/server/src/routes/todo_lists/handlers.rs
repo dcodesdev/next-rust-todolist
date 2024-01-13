@@ -6,7 +6,7 @@ use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
     middlewares::ReqUser,
-    models::todo_list::TodoList,
+    models::{todo_item::TodoItem, todo_list::TodoList},
 };
 
 #[derive(Debug, Serialize)]
@@ -29,6 +29,7 @@ pub async fn get_todo_lists(
         SELECT id, name, user_id, created_at, updated_at
         FROM lists
         WHERE user_id = $1
+        LIMIT 25
         "#,
         user.id
     )
@@ -153,4 +154,57 @@ pub async fn delete_todo_list(
     };
 
     Ok(Json(DeleteTodoListResponse { id: list.id }))
+}
+
+#[derive(Debug, Serialize)]
+pub struct GetTodoListDetailsResponse {
+    list: TodoList,
+    items: Vec<TodoItem>,
+}
+
+pub async fn get_todo_list_details(
+    Path(id): Path<String>,
+    Extension(user): Extension<ReqUser>,
+    Extension(state): Extension<AppState>,
+) -> ApiResult<Json<GetTodoListDetailsResponse>> {
+    let list_id = match Uuid::parse_str(&id) {
+        Ok(list_id) => list_id,
+        Err(_) => return Err(ApiError::BadRequest),
+    };
+
+    let list = match sqlx::query_as!(
+        TodoList,
+        r#"
+        SELECT id, name, user_id, created_at, updated_at
+        FROM lists
+        WHERE user_id = $1 AND id = $2
+        "#,
+        user.id,
+        list_id
+    )
+    .fetch_one(&state.db)
+    .await
+    {
+        Ok(list) => list,
+        Err(_) => return Err(ApiError::NotFound),
+    };
+
+    let items = match sqlx::query_as!(
+        TodoItem,
+        r#"
+        SELECT id, title, description, completed, list_id, created_at, updated_at
+        FROM todo_items
+        WHERE list_id = $1
+        LIMIT 25
+        "#,
+        list_id
+    )
+    .fetch_all(&state.db)
+    .await
+    {
+        Ok(items) => items,
+        Err(_) => return Err(ApiError::InternalServerError),
+    };
+
+    Ok(Json(GetTodoListDetailsResponse { list, items }))
 }
