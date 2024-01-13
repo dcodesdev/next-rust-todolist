@@ -29,7 +29,7 @@ pub async fn app() {
         .allow_origin(Any);
 
     let app: Router = Router::new()
-        .nest("/todos", routes::todos::totos_routes())
+        .nest("/todos", routes::todos::todos_routes())
         .nest("/user", routes::user::user_routes())
         .route(
             "/_health",
