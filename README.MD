@@ -34,13 +34,13 @@ This project is a simple todo list app written in Rust. It is a learning project
 - Create the database:
 
   ```bash
-  cargo sqlx database create
+  pnpm db:create
   ```
 
 - Apply the migrations
 
   ```bash
-  cargo sqlx migrate run
+  pnpm migrate:run
   ```
 
 - Run the app:
