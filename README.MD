@@ -83,7 +83,7 @@ This project is a simple todo list app written in Rust. It is a learning project
 - [ ] Add a todo item
 - [ ] Remove a todo item
 - [ ] Update a todo item
-- [ ] Get all todo items
+- [x] Get all todo items
 
 ### UI
 
