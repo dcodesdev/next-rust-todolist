@@ -9,23 +9,51 @@
 
 This project is a simple todo list app written in Rust. It is a learning project for me to learn Rust.
 
-## Run the app in development mode
+## How to run
 
-```bash
-pnpm dev
-```
+- Install the `sqlx-cli` for postgres:
 
-### Run server only
+  ```bash
+  cargo install sqlx-cli --no-default-features --features postgres
+  ```
 
-```bash
-pnpm dev:server
-```
+- Create a `.env` file in the `packages/server` folder and add the following:
 
-### Run UI only
+  ```bash
+  DATABASE_URL="postgresql://postgres:password@localhost:5432/next-rust-todolist"
+  ```
 
-```bash
-pnpm dev:ui
-```
+  Replace the `postgres` and `password` with your own postgres username and password and choose a database name of your choice.
+
+- Create the database:
+
+  ```bash
+  cargo sqlx database create
+  ```
+
+- Apply the migrations
+
+  ```bash
+  cargo sqlx migrate run
+  ```
+
+- Run the app:
+
+  ```bash
+  pnpm dev
+  ```
+
+- Run server only (optional)
+
+  ```bash
+  pnpm dev:server
+  ```
+
+- Run UI only (optional)
+
+  ```bash
+  pnpm dev:ui
+  ```
 
 ## Progress
 
