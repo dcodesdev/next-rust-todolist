@@ -119,3 +119,38 @@ pub async fn update_todo_list(
 
     Ok(Json(UpdateTodoListResponse { data: list }))
 }
+
+#[derive(Debug, Serialize)]
+pub struct DeleteTodoListResponse {
+    id: Uuid,
+}
+
+pub async fn delete_todo_list(
+    Path(id): Path<String>,
+    Extension(user): Extension<ReqUser>,
+    Extension(state): Extension<AppState>,
+) -> ApiResult<Json<DeleteTodoListResponse>> {
+    let list_id = match Uuid::parse_str(&id) {
+        Ok(list_id) => list_id,
+        Err(_) => return Err(ApiError::BadRequest),
+    };
+
+    let list = match sqlx::query_as!(
+        TodoList,
+        r#"
+        DELETE FROM lists
+        WHERE user_id = $1 AND id = $2
+        RETURNING id, name, user_id, created_at, updated_at
+        "#,
+        user.id,
+        list_id
+    )
+    .fetch_one(&state.db)
+    .await
+    {
+        Ok(list) => list,
+        Err(_) => return Err(ApiError::NotFound),
+    };
+
+    Ok(Json(DeleteTodoListResponse { id: list.id }))
+}
