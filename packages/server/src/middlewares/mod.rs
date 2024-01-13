@@ -1,12 +1,11 @@
 use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
+    utils::jwt::decode_jwt,
 };
 use axum::{
     extract::Request, http::header::AUTHORIZATION, middleware::Next, response::Response, Extension,
 };
-use jsonwebtoken::{decode, DecodingKey, Validation};
-use serde::Deserialize;
 use sqlx::types::{chrono::NaiveDateTime, Uuid};
 
 #[derive(Debug, Clone)]
@@ -63,32 +62,5 @@ pub async fn auth(
             return Ok(next.run(req).await);
         }
         None => return Err(ApiError::Unauthorized),
-    }
-}
-
-fn decode_jwt(token: &str) -> Option<Uuid> {
-    let key = std::env::var("JWT_SECRET").expect("JWT_SECRET not set");
-
-    #[derive(Deserialize)]
-    struct Claims {
-        id: String,
-    }
-
-    let decoded = decode::<Claims>(
-        token,
-        &DecodingKey::from_secret(key.as_ref()),
-        &Validation::new(jsonwebtoken::Algorithm::HS256),
-    );
-
-    match decoded {
-        Err(_) => None,
-        Ok(token_data) => {
-            let id = token_data.claims.id;
-
-            match Uuid::parse_str(&id) {
-                Err(_) => None,
-                Ok(id) => Some(id),
-            }
-        }
     }
 }
