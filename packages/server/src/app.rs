@@ -1,5 +1,6 @@
 use crate::routes;
-use axum::{http::StatusCode, routing, Extension, Router};
+use axum::{http::StatusCode, routing, Extension, Json, Router};
+use serde_json::json;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
@@ -35,6 +36,15 @@ pub async fn app() {
         .route(
             "/_health",
             routing::get(|| async { (StatusCode::OK, "OK") }),
+        )
+        .route(
+            "/",
+            routing::get(|| async {
+                (
+                    StatusCode::OK,
+                    Json(json!({"message": "Axum server is running!"})),
+                )
+            }),
         )
         .layer(state)
         .layer(cors);
