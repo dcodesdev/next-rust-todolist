@@ -5,8 +5,8 @@ use uuid::Uuid;
 use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
-    middlewares::ReqUser,
     models::todo_item::TodoItem,
+    routes::user::handlers::UserWithoutPassword,
 };
 
 #[derive(Debug, Serialize)]
@@ -16,7 +16,7 @@ pub struct GetTodosResponse {
 
 pub async fn get_todos(
     Extension(state): Extension<AppState>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
 ) -> ApiResult<Json<GetTodosResponse>> {
     let todos = match sqlx::query_as!(
         TodoItem,
@@ -53,7 +53,7 @@ pub struct CreateTodoResponse {
 
 pub async fn create_todo(
     Extension(state): Extension<AppState>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Json(body): Json<CreateTodoRequest>,
 ) -> ApiResult<Json<CreateTodoResponse>> {
     let todo = match sqlx::query_as!(
@@ -95,7 +95,7 @@ pub struct UpdateTodoResponse {
 
 pub async fn update_todo(
     Extension(state): Extension<AppState>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Path(id): Path<Uuid>,
     Json(body): Json<UpdateTodoRequest>,
 ) -> ApiResult<Json<UpdateTodoResponse>> {
@@ -133,7 +133,7 @@ pub struct DeleteTodoResponse {
 
 pub async fn delete_todo(
     Extension(state): Extension<AppState>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Path(id): Path<Uuid>,
 ) -> ApiResult<Json<DeleteTodoResponse>> {
     match sqlx::query!(

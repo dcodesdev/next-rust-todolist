@@ -19,13 +19,13 @@ pub struct RegisterUserRequestBody {
     password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct UserWithoutPassword {
-    id: uuid::Uuid,
-    name: Option<String>,
-    email: String,
-    created_at: chrono::NaiveDateTime,
-    updated_at: chrono::NaiveDateTime,
+    pub id: uuid::Uuid,
+    pub name: Option<String>,
+    pub email: String,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
 }
 
 pub async fn register_user(
@@ -126,6 +126,21 @@ pub async fn login_user(
 
     Ok(Json(LoginUserResponse {
         token,
+        message: "success",
+    }))
+}
+
+#[derive(Debug, Serialize)]
+pub struct GetCurrentUserResponse {
+    user: UserWithoutPassword,
+    message: &'static str,
+}
+
+pub async fn get_current_user(
+    Extension(user): Extension<UserWithoutPassword>,
+) -> ApiResult<Json<GetCurrentUserResponse>> {
+    Ok(Json(GetCurrentUserResponse {
+        user,
         message: "success",
     }))
 }
