@@ -5,8 +5,8 @@ use uuid::Uuid;
 use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
-    middlewares::ReqUser,
     models::{todo_item::TodoItem, todo_list::TodoList},
+    routes::user::handlers::UserWithoutPassword,
 };
 
 #[derive(Debug, Serialize)]
@@ -20,7 +20,7 @@ pub struct GetTodoListsResponse {
 }
 
 pub async fn get_todo_lists(
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Extension(state): Extension<AppState>,
 ) -> ApiResult<Json<GetTodoListsResponse>> {
     let lists = match sqlx::query_as!(
@@ -54,7 +54,7 @@ pub struct CreateTodoListResponse {
 }
 
 pub async fn create_todo_list(
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Extension(state): Extension<AppState>,
     Json(body): Json<CreateTodoListRequest>,
 ) -> ApiResult<Json<CreateTodoListResponse>> {
@@ -90,7 +90,7 @@ pub struct UpdateTodoListResponse {
 
 pub async fn update_todo_list(
     Path(id): Path<String>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Extension(state): Extension<AppState>,
     Json(body): Json<UpdateTodoListRequest>,
 ) -> ApiResult<Json<UpdateTodoListResponse>> {
@@ -128,7 +128,7 @@ pub struct DeleteTodoListResponse {
 
 pub async fn delete_todo_list(
     Path(id): Path<String>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Extension(state): Extension<AppState>,
 ) -> ApiResult<Json<DeleteTodoListResponse>> {
     let list_id = match Uuid::parse_str(&id) {
@@ -164,7 +164,7 @@ pub struct GetTodoListDetailsResponse {
 
 pub async fn get_todo_list_details(
     Path(id): Path<String>,
-    Extension(user): Extension<ReqUser>,
+    Extension(user): Extension<UserWithoutPassword>,
     Extension(state): Extension<AppState>,
 ) -> ApiResult<Json<GetTodoListDetailsResponse>> {
     let list_id = match Uuid::parse_str(&id) {

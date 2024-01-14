@@ -1,21 +1,12 @@
 use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
+    routes::user::handlers::UserWithoutPassword,
     utils::jwt::decode_jwt,
 };
 use axum::{
     extract::Request, http::header::AUTHORIZATION, middleware::Next, response::Response, Extension,
 };
-use sqlx::types::{chrono::NaiveDateTime, Uuid};
-
-#[derive(Debug, Clone)]
-pub struct ReqUser {
-    pub id: Uuid,
-    pub name: Option<String>,
-    pub email: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
-}
 
 pub async fn auth(
     Extension(state): Extension<AppState>,
@@ -43,7 +34,7 @@ pub async fn auth(
     };
 
     let user = sqlx::query_as!(
-        ReqUser,
+        UserWithoutPassword,
         "SELECT id, name, email, created_at, updated_at FROM users WHERE id = $1",
         &user_id
     )
