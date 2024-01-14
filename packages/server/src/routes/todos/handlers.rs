@@ -69,7 +69,7 @@ pub async fn create_todo(
         &body.title,
         body.description,
         &body.list_id,
-        user.id // Assuming user.id is the field with the user's ID
+        user.id
     )
     .fetch_one(&state.db)
     .await
@@ -114,7 +114,7 @@ pub async fn update_todo(
         body.description,
         body.completed,
         id,
-        user.id // Assuming user.id is the field with the user's ID
+        user.id
     )
     .fetch_one(&state.db)
     .await
@@ -144,7 +144,7 @@ pub async fn delete_todo(
         WHERE todo_items.id = $1 AND lists.user_id = $2
         "#,
         id,
-        user.id // Assuming user.id is the field with the user's ID
+        user.id
     )
     .fetch_one(&state.db)
     .await
@@ -160,7 +160,7 @@ pub async fn delete_todo(
         WHERE todo_items.id = $1 AND todo_items.list_id = lists.id AND lists.user_id = $2
         "#,
         id,
-        user.id // Assuming user.id is the field with the user's ID
+        user.id
     )
     .execute(&state.db)
     .await;
