@@ -80,9 +80,9 @@ This project is a simple todo list app written in Rust. It is a learning project
 - [x] Get all todo lists
 - [x] Delete a todo list
 - [x] Get a todo list details
-- [ ] Add a todo item
+- [x] Add a todo item
 - [ ] Remove a todo item
-- [ ] Update a todo item
+- [x] Update a todo item
 - [x] Get all todo items
 
 ### UI
