@@ -11,6 +11,9 @@ use axum::{
 pub fn todos_routes() -> Router {
     Router::new()
         .route("/", get(handlers::get_todos).post(handlers::create_todo))
-        .route("/:id", put(handlers::update_todo))
+        .route(
+            "/:id",
+            put(handlers::update_todo).delete(handlers::delete_todo),
+        )
         .layer(from_fn(middlewares::auth))
 }
