@@ -125,3 +125,50 @@ pub async fn update_todo(
 
     Ok(Json(UpdateTodoResponse { data: todo }))
 }
+
+#[derive(Debug, Serialize)]
+pub struct DeleteTodoResponse {
+    pub message: &'static str,
+}
+
+pub async fn delete_todo(
+    Extension(state): Extension<AppState>,
+    Extension(user): Extension<ReqUser>,
+    Path(id): Path<Uuid>,
+) -> ApiResult<Json<DeleteTodoResponse>> {
+    match sqlx::query!(
+        r#"
+        SELECT todo_items.id
+        FROM todo_items
+        INNER JOIN lists ON lists.id = todo_items.list_id
+        WHERE todo_items.id = $1 AND lists.user_id = $2
+        "#,
+        id,
+        user.id // Assuming user.id is the field with the user's ID
+    )
+    .fetch_one(&state.db)
+    .await
+    {
+        Ok(todo) => todo,
+        Err(_) => return Err(ApiError::NotFound),
+    };
+
+    let result = sqlx::query!(
+        r#"
+        DELETE FROM todo_items
+        USING lists
+        WHERE todo_items.id = $1 AND todo_items.list_id = lists.id AND lists.user_id = $2
+        "#,
+        id,
+        user.id // Assuming user.id is the field with the user's ID
+    )
+    .execute(&state.db)
+    .await;
+
+    match result {
+        Ok(_) => Ok(Json(DeleteTodoResponse {
+            message: "Todo item successfully deleted",
+        })),
+        Err(_) => Err(ApiError::InternalServerError),
+    }
+}
