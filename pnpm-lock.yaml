@@ -62,6 +62,9 @@ importers:
       react-query:
         specifier: ^3.39.3
         version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
+      server:
+        specifier: workspace:*
+        version: link:../server
       tailwind-merge:
         specifier: ^2.2.0
         version: 2.2.0
