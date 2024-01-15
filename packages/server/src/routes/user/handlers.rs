@@ -5,27 +5,34 @@ use crate::{
 };
 use axum::{Extension, Json};
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct RegisterUserResponse {
     user: UserWithoutPassword,
     message: &'static str,
     token: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct RegisterUserRequestBody {
     name: Option<String>,
     email: String,
     password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, TS)]
+#[ts(export)]
 pub struct UserWithoutPassword {
+    #[ts(type = "string")]
     pub id: uuid::Uuid,
     pub name: Option<String>,
     pub email: String,
+    #[ts(type = "string")]
     pub created_at: chrono::NaiveDateTime,
+    #[ts(type = "string")]
     pub updated_at: chrono::NaiveDateTime,
 }
 
@@ -75,13 +82,15 @@ pub async fn register_user(
     }))
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct LoginUserRequestBody {
     email: String,
     password: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, TS)]
+#[ts(export)]
 pub struct LoginUserResponse {
     token: String,
     message: &'static str,
@@ -137,7 +146,8 @@ pub async fn login_user(
     }))
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct GetCurrentUserResponse {
     user: UserWithoutPassword,
     message: &'static str,
