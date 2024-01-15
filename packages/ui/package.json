@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "shadcn": "pnpm dlx shadcn-ui@latest" 
+    "shadcn": "pnpm dlx shadcn-ui@latest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -25,7 +25,8 @@
     "react-query": "^3.39.3",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "server": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20",
