@@ -1,4 +1,4 @@
-use crate::routes;
+use crate::{error::ApiError, routes};
 use axum::{http::StatusCode, routing, Extension, Json, Router};
 use serde_json::json;
 use sqlx::postgres::{PgPool, PgPoolOptions};
@@ -30,6 +30,9 @@ pub async fn app() {
         .allow_origin(Any);
 
     let app: Router = Router::new()
+        .fallback_service(routing::any(|| async {
+            Err::<ApiError, _>(ApiError::NotFound)
+        }))
         .nest("/todos", routes::todos::todos_routes())
         .nest("/user", routes::user::user_routes())
         .nest("/lists", routes::todo_lists::todo_lists_routes())
