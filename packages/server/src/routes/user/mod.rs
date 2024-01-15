@@ -9,7 +9,7 @@ pub mod handlers;
 pub fn user_routes() -> Router {
     Router::new()
         .route("/", get(handlers::get_current_user))
-        .layer(from_fn(middlewares::auth))
+        .layer(from_fn(middlewares::auth)) // Only the get user route needs authentication
         .route("/", post(handlers::register_user))
         .route("/login", post(handlers::login_user))
 }

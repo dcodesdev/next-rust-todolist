@@ -1,7 +1,7 @@
 use crate::{
     app::AppState,
     error::{ApiError, ApiResult},
-    utils,
+    utils::{self, jwt::gen_jwt},
 };
 use axum::{Extension, Json};
 use serde::{Deserialize, Serialize};
@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 pub struct RegisterUserResponse {
     user: UserWithoutPassword,
     message: &'static str,
+    token: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -62,9 +63,15 @@ pub async fn register_user(
         }
     };
 
+    // We can use the "?" operator to convert the error type
+    // to ApiError because we implemented From<jsonwebtoken::errors::Error> for ApiError
+    // Check the error.rs file
+    let token = gen_jwt(user.id)?;
+
     Ok(Json(RegisterUserResponse {
         user,
         message: "User registered successfully",
+        token,
     }))
 }
 
