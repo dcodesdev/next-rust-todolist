@@ -1,4 +1,5 @@
 use axum::{http::StatusCode, response::IntoResponse, Json};
+use jsonwebtoken::errors::Error as JwtError;
 use serde_json::json;
 
 #[derive(Debug)]
@@ -24,5 +25,11 @@ impl IntoResponse for ApiError {
         };
 
         (status_code, Json(json!({ "message": message }))).into_response()
+    }
+}
+
+impl From<JwtError> for ApiError {
+    fn from(_: JwtError) -> Self {
+        ApiError::InternalServerError
     }
 }

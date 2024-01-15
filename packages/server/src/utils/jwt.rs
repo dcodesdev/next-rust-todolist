@@ -1,4 +1,4 @@
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{decode, encode, errors::Error, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -8,7 +8,7 @@ struct Claims {
     id: Uuid,
 }
 
-pub fn gen_jwt(id: Uuid) -> Result<String, jsonwebtoken::errors::Error> {
+pub fn gen_jwt(id: Uuid) -> Result<String, Error> {
     let jwt_secret = std::env::var("JWT_SECRET").expect("JWT_SECRET must be set");
 
     let claims = Claims {
