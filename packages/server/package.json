@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bindings/index.ts",
+  "scripts": {
+    "types": "pnpm types:gen && pnpm types:check && pnpm types:export && pnpm fmt",
+    "types:check": "tsc --noEmit",
+    "types:export": "python scripts/export_types.py",
+    "types:gen": "cargo test -- --nocapture",
+    "fmt": "prettier --write bindings/**/*.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.2.2",
+    "typescript": "^5"
+  }
+}
