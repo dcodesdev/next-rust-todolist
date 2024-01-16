@@ -10,39 +10,23 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { client } from "@/utils"
-import { FormEvent, useRef } from "react"
-import { LoginUserResponse } from "server"
-import Cookies from "js-cookie"
-import { useMutation } from "@tanstack/react-query"
-import { toastError } from "@/utils/toast"
-import { useRouter } from "next/navigation"
+import { FormEventHandler, useRef } from "react"
+import { useLoginUser } from "@/api/mutation/useLoginUser"
 
 export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
 
-  const router = useRouter()
+  const { mutateAsync, isPending } = useLoginUser()
 
-  const { mutateAsync: onSubmit, isPending } = useMutation({
-    mutationFn: async (e: FormEvent) => {
-      e.preventDefault()
+  const onSubmit: FormEventHandler = (e) => {
+    e.preventDefault()
 
-      const email = emailRef.current?.value
-      const password = passwordRef.current?.value
+    const email = emailRef.current?.value
+    const password = passwordRef.current?.value
 
-      if (!email) return
-      if (!password) return
-
-      return client
-        .post<LoginUserResponse>("/user/login", { email, password })
-        .then((r) => {
-          Cookies.set("token", r.data.token)
-          router.push("/dashboard")
-        })
-        .catch(toastError)
-    },
-  })
+    mutateAsync({ email, password })
+  }
 
   return (
     <Container>
