@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           source: "packages/server/target/release/server"
-          target: "~/apps/next-rust-todolist/packages/server/target/release/server"
+          target: "~/apps/next-rust-todolist/packages/server/target/release/"
           strip_components: 4
 
       - uses: appleboy/ssh-action@v1.0.0
