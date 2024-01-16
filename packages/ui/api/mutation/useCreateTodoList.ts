@@ -1,13 +1,14 @@
 import { post } from "@/utils"
-import { toastError } from "@/utils/toast"
 import { useMutation } from "@tanstack/react-query"
 import { GetTodoListsResponse } from "server"
 import { z } from "zod"
 
 const createListSchema = z.object({
-  name: z.string({
-    required_error: "Name is required",
-  }),
+  name: z
+    .string({
+      required_error: "Name is required",
+    })
+    .min(1, "Name is required"),
 })
 
 export const useCreateTodoList = () => {
@@ -17,7 +18,7 @@ export const useCreateTodoList = () => {
       const parsed = createListSchema.safeParse(body)
 
       if (!parsed.success) {
-        return toastError(parsed.error.issues[0].message)
+        throw new Error(parsed.error.issues[0].message)
       }
 
       const { name } = parsed.data

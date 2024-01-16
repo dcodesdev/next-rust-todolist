@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { useModal } from "@/hooks/useModal"
+import { toastError } from "@/utils/toast"
 import { FormEvent, useRef } from "react"
 import { toast } from "sonner"
 
@@ -28,11 +29,13 @@ export const CreateListButton = () => {
 
     const name = nameRef.current?.value
 
-    mutateAsync({ name }).then(() => {
-      refetch()
-      close()
-      toast.success("List created successfully")
-    })
+    mutateAsync({ name })
+      .then(() => {
+        refetch()
+        close()
+        toast.success("List created successfully")
+      })
+      .catch(toastError)
   }
 
   return (
@@ -61,7 +64,7 @@ export const CreateListButton = () => {
             />
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="mt-2">
             <Button type="submit" disabled={isPending} variant="secondary">
               Create
             </Button>
