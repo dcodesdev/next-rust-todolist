@@ -9,7 +9,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm dev:server\" \"pnpm dev:ui\"",
     "build:ui": "cd packages/ui && pnpm build",
     "build:server": "cd packages/server && cargo build --release",
-    "build": "concurrently -k -p \"[{name}]\" -n \"UI,Server\" -c \"yellow.bold,cyan.bold\" \"pnpm build:ui\" \"pnpm build:server\"",
+    "build": "pnpm build:ui & pnpm build:server",
     "start:server": "cd packages/server && cargo run --release",
     "start:ui": "cd packages/ui && pnpm start",
     "start": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm start:server\" \"pnpm start:ui\"",
@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "wait-on": "^7.2.0"
   }
 }
