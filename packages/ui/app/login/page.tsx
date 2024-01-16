@@ -16,10 +16,13 @@ import { LoginUserResponse } from "server"
 import Cookies from "js-cookie"
 import { useMutation } from "@tanstack/react-query"
 import { toastError } from "@/utils/toast"
+import { useRouter } from "next/navigation"
 
 export default function Login() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+
+  const router = useRouter()
 
   const { mutateAsync: onSubmit, isPending } = useMutation({
     mutationFn: async (e: FormEvent) => {
@@ -35,7 +38,7 @@ export default function Login() {
         .post<LoginUserResponse>("/user/login", { email, password })
         .then((r) => {
           Cookies.set("token", r.data.token)
-          window.location.href = "/dashboard"
+          router.push("/dashboard")
         })
         .catch(toastError)
     },
