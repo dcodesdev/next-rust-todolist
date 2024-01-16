@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { useModal } from "@/hooks/useModal"
 import { dayjs } from "@/utils/dayjs"
+import { toastError } from "@/utils/toast"
 import { Trash } from "lucide-react"
 import { FC } from "react"
 import { GetTodoListsResponse } from "server"
@@ -27,11 +28,13 @@ export const ListItem: FC<{
   const { refetch } = useFetchLists()
 
   const onPress = () => {
-    deleteList().then(() => {
-      toast.success("List deleted successfully")
-      refetch()
-      close()
-    })
+    deleteList()
+      .then(() => {
+        toast.success("List deleted successfully")
+        refetch()
+        close()
+      })
+      .catch(toastError)
   }
 
   return (
