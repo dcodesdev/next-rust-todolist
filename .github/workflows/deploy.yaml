@@ -1,0 +1,50 @@
+name: Build and deploy Rust server
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [dev]
+
+jobs:
+  deploy_rust:
+    runs-on: ubuntu-latest
+    container: rust:slim-buster
+    env:
+      SQLX_OFFLINE: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          apt-get update
+          apt-get install -y libssl-dev pkg-config
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build Rust
+        run: cargo build --release --manifest-path ./packages/server/Cargo.toml
+
+      - name: Copy file via scp
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          source: "packages/server/target/release/server"
+          target: "~/apps/next-rust-todolist/packages/server/target/release/server"
+          strip_components: 4
+
+      - uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd apps/next-rust-todolist
+            git checkout .
+            git pull
+            docker-compose up -d --build
