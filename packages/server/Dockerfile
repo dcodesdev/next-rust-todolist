@@ -5,8 +5,8 @@ RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY packages/server/.env .env
-COPY packages/server/target/release/server server
+COPY .env .env
+COPY target/release/server server
 
 RUN chmod +x ./server
 
