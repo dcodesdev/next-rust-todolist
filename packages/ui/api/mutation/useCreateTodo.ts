@@ -11,11 +11,7 @@ const createTodoSchema = z.object({
   list_id: z.string({
     required_error: "List is required",
   }),
-  description: z
-    .string({
-      required_error: "Description is required",
-    })
-    .min(1, "Description is required"),
+  description: z.string().optional(),
 })
 
 export const useCreateTodo = () => {
