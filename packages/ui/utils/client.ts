@@ -25,7 +25,10 @@ export const get = <T = any>(url: string, config?: AxiosRequestConfig) =>
   client
     .get<T>(url, config)
     .then((r) => r.data)
-    .catch(toastError)
+    .catch((e) => {
+      toastError(e)
+      throw Error(e)
+    })
 
 export const post = <T = any>(
   url: string,
@@ -34,6 +37,28 @@ export const post = <T = any>(
 ) =>
   client
     .post<T>(url, body, config)
+    .then((r) => r.data)
+    .catch((e) => {
+      toastError(e)
+      throw Error(e)
+    })
+
+export const put = <T = any>(
+  url: string,
+  body?: any,
+  config?: AxiosRequestConfig<T>
+) =>
+  client
+    .put<T>(url, body, config)
+    .then((r) => r.data)
+    .catch((e) => {
+      toastError(e)
+      throw Error(e)
+    })
+
+export const del = <T = any>(url: string, config?: AxiosRequestConfig<T>) =>
+  client
+    .delete<T>(url, config)
     .then((r) => r.data)
     .catch((e) => {
       toastError(e)
