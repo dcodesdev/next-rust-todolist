@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen font-sans antialiased bg-primary-1 text-gray-50",
+          "min-h-screen font-sans antialiased bg-primary-1 text-gray-50 dark",
           inter.className
         )}
       >

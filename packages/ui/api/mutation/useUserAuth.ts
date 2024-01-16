@@ -1,6 +1,6 @@
 import { post } from "@/utils"
 import { useMutation } from "@tanstack/react-query"
-import { LoginUserResponse } from "server"
+import { LoginUserResponse, RegisterUserResponse } from "server"
 import Cookies from "js-cookie"
 import { useRouter } from "next/navigation"
 import { z } from "zod"
@@ -16,9 +16,10 @@ const userLoginSchema = z.object({
       required_error: "Password is required",
     })
     .min(1, "Password is required"),
+  name: z.string().optional(),
 })
 
-export const useLoginUser = () => {
+export const useUserAuth = (isRegister = false) => {
   const router = useRouter()
 
   return useMutation({
@@ -31,12 +32,20 @@ export const useLoginUser = () => {
 
       const { email, password } = parsed.data
 
-      return post<LoginUserResponse>("/user/login", { email, password }).then(
-        (r) => {
-          Cookies.set("token", r.token)
-          router.push("/dashboard")
-        }
-      )
+      return isRegister
+        ? post<RegisterUserResponse>("/user", {
+            email,
+            password,
+          }).then((r) => {
+            Cookies.set("token", r.token)
+            router.push("/dashboard")
+          })
+        : post<LoginUserResponse>("/user/login", { email, password }).then(
+            (r) => {
+              Cookies.set("token", r.token)
+              router.push("/dashboard")
+            }
+          )
     },
   })
 }
