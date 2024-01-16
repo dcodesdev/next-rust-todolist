@@ -35,4 +35,7 @@ export const post = <T = any>(
   client
     .post<T>(url, body, config)
     .then((r) => r.data)
-    .catch(toastError)
+    .catch((e) => {
+      toastError(e)
+      throw Error(e)
+    })
