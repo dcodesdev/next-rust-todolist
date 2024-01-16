@@ -1,0 +1,48 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE todo_items\n        SET title = COALESCE($1, title), description = COALESCE($2, description),\n        completed = COALESCE($3, completed)\n        FROM lists\n        WHERE todo_items.id = $4 AND todo_items.list_id = lists.id AND lists.user_id = $5\n        RETURNING todo_items.id, todo_items.title, todo_items.description, \n        todo_items.completed, todo_items.list_id, todo_items.created_at, todo_items.updated_at\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "completed",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "list_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 6,
+        "name": "updated_at",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": ["Varchar", "Varchar", "Bool", "Uuid", "Uuid"]
+    },
+    "nullable": [false, false, true, false, false, false, false]
+  },
+  "hash": "85cc283bb8ad207c7b29dad8038fb61d097d7df275b4eb9dc5167fce67f82e37"
+}
