@@ -1,4 +1,5 @@
 import { useCreateTodoList } from "@/api/mutation/useCreateTodoList"
+import { useFetchLists } from "@/api/query/useFetchLists"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,25 +11,36 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
+import { useModal } from "@/hooks/useModal"
 import { FormEvent, useRef } from "react"
+import { toast } from "sonner"
 
 export const CreateListButton = () => {
+  const { close, isOpen, open, setIsOpen } = useModal()
+
   const nameRef = useRef<HTMLInputElement>(null)
 
-  const { mutate, isPending } = useCreateTodoList()
+  const { mutateAsync, isPending } = useCreateTodoList()
+  const { refetch } = useFetchLists()
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
 
     const name = nameRef.current?.value
 
-    mutate({ name })
+    mutateAsync({ name }).then(() => {
+      refetch()
+      close()
+      toast.success("List created successfully")
+    })
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="mt-5">Create List</Button>
+        <Button onClick={open} className="mt-5">
+          Create List
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="bg-black text-gray-50">
