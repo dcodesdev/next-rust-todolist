@@ -1,5 +1,6 @@
 use axum::{extract::Path, Extension, Json};
 use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{
@@ -9,12 +10,8 @@ use crate::{
     routes::user::handlers::UserWithoutPassword,
 };
 
-#[derive(Debug, Serialize)]
-pub struct Todo {
-    id: Uuid,
-}
-
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct GetTodoListsResponse {
     data: Vec<TodoList>,
 }
@@ -43,12 +40,14 @@ pub async fn get_todo_lists(
     Ok(Json(GetTodoListsResponse { data: lists }))
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export)]
 pub struct CreateTodoListRequest {
     name: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct CreateTodoListResponse {
     data: TodoList,
 }
@@ -78,12 +77,14 @@ pub async fn create_todo_list(
     Ok(Json(CreateTodoListResponse { data: list }))
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, TS)]
+#[ts(export)]
 pub struct UpdateTodoListRequest {
     name: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct UpdateTodoListResponse {
     data: TodoList,
 }
@@ -121,8 +122,10 @@ pub async fn update_todo_list(
     Ok(Json(UpdateTodoListResponse { data: list }))
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct DeleteTodoListResponse {
+    #[ts(type = "string")]
     id: Uuid,
 }
 
@@ -156,7 +159,8 @@ pub async fn delete_todo_list(
     Ok(Json(DeleteTodoListResponse { id: list.id }))
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, TS)]
+#[ts(export)]
 pub struct GetTodoListDetailsResponse {
     list: TodoList,
     items: Vec<TodoItem>,
