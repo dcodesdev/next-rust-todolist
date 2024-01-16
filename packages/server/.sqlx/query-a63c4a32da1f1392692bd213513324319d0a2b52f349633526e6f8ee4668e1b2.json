@@ -1,0 +1,38 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        UPDATE lists\n        SET name = $1\n        WHERE user_id = $2 AND id = $3\n        RETURNING id, name, user_id, created_at, updated_at\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "user_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 4,
+        "name": "updated_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": ["Varchar", "Uuid", "Uuid"]
+    },
+    "nullable": [false, false, false, false, false]
+  },
+  "hash": "a63c4a32da1f1392692bd213513324319d0a2b52f349633526e6f8ee4668e1b2"
+}

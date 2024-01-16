@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT todo_items.id\n        FROM todo_items\n        INNER JOIN lists ON lists.id = todo_items.list_id\n        WHERE todo_items.id = $1 AND lists.user_id = $2\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": ["Uuid", "Uuid"]
+    },
+    "nullable": [false]
+  },
+  "hash": "6bc94d28694a68d45997693101e7a843fc5ba2a955d0abcf104438adb675d618"
+}

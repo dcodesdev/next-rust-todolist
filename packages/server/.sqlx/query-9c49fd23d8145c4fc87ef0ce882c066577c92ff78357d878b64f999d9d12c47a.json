@@ -1,0 +1,48 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO todo_items (title, description, list_id)\n        SELECT $1, $2, $3\n        FROM lists\n        WHERE lists.id = $3 AND lists.user_id = $4\n        RETURNING todo_items.id, todo_items.title, todo_items.description, \n        todo_items.completed, todo_items.list_id, todo_items.created_at, todo_items.updated_at\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "completed",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "list_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at",
+        "type_info": "Timestamp"
+      },
+      {
+        "ordinal": 6,
+        "name": "updated_at",
+        "type_info": "Timestamp"
+      }
+    ],
+    "parameters": {
+      "Left": ["Varchar", "Varchar", "Uuid", "Uuid"]
+    },
+    "nullable": [false, false, true, false, false, false, false]
+  },
+  "hash": "9c49fd23d8145c4fc87ef0ce882c066577c92ff78357d878b64f999d9d12c47a"
+}
