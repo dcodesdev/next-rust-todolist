@@ -13,7 +13,6 @@ const createListSchema = z.object({
 
 export const useCreateTodoList = () => {
   return useMutation({
-    mutationKey: ["createList"],
     mutationFn: async (body: any) => {
       const parsed = createListSchema.safeParse(body)
 
