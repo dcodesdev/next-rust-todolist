@@ -16,13 +16,22 @@
     "migrate:run": "cd packages/server && cargo sqlx migrate run",
     "migrate:create": "cd packages/server && cargo sqlx migrate add -r",
     "db:create": "cd packages/server && cargo sqlx database create",
-    "build:start": "pnpm build && pnpm start"
+    "build:start": "pnpm build && pnpm start",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.2",
     "wait-on": "^7.2.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,json}": [
+      "prettier --write"
+    ]
   }
 }
