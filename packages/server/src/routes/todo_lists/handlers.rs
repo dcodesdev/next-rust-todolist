@@ -26,6 +26,7 @@ pub async fn get_todo_lists(
         SELECT id, name, user_id, created_at, updated_at
         FROM lists
         WHERE user_id = $1
+        ORDER BY created_at DESC
         LIMIT 25
         "#,
         user.id
