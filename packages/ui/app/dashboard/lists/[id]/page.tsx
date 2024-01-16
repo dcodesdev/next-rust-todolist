@@ -1,6 +1,7 @@
 "use client"
 
 import { useCreateTodo } from "@/api/mutation/useCreateTodo"
+import { useUpdateTodo } from "@/api/mutation/useUpdateTodo"
 import { useFetchList } from "@/api/query/useFetchList"
 import { Container } from "@/components/Container"
 import { Loading } from "@/components/Loading"
@@ -20,11 +21,12 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 import { useModal } from "@/hooks/useModal"
 import { cn } from "@/lib/utils"
 import { dayjs } from "@/utils/dayjs"
 import { toastError } from "@/utils/toast"
-import { FC, FormEvent, useRef } from "react"
+import { FC, FormEvent, useRef, useState } from "react"
 import { GetTodoListDetailsResponse } from "server"
 import { toast } from "sonner"
 
@@ -58,8 +60,21 @@ export default function ListPage({ params }: { params: { id: string } }) {
 export const TodoItem: FC<{
   todo: GetTodoListDetailsResponse["items"][number]
 }> = ({ todo }) => {
+  const [checked, setChecked] = useState(todo.completed)
+
+  const { mutateAsync } = useUpdateTodo(todo.id)
+
+  const onChange = (completed: boolean) => {
+    mutateAsync({ completed })
+      .then(() => {
+        toast.success("Todo updated successfully")
+        setChecked(completed)
+      })
+      .catch(toastError)
+  }
+
   return (
-    <Card className="flex justify-between items-center gap-2 p-3 cursor-pointer hover:bg-slate-900">
+    <Card className="flex justify-between items-center gap-2 p-3 cursor-pointer">
       <CardContent>
         <CardTitle>{todo.title}</CardTitle>
         <CardDescription className="mt-3">{todo.description}</CardDescription>
@@ -68,6 +83,18 @@ export const TodoItem: FC<{
           Created {dayjs(todo.created_at).fromNow()}
         </small>
       </CardContent>
+
+      <div className="flex items-center gap-3">
+        <p
+          className={cn({
+            "text-gray-500": !checked,
+            "text-green-500": checked,
+          })}
+        >
+          {checked ? "Completed" : "Not Completed"}{" "}
+        </p>
+        <Switch onCheckedChange={onChange} checked={checked} />
+      </div>
     </Card>
   )
 }
