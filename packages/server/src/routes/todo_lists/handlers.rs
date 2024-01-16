@@ -200,6 +200,7 @@ pub async fn get_todo_list_details(
         SELECT id, title, description, completed, list_id, created_at, updated_at
         FROM todo_items
         WHERE list_id = $1
+        ORDER BY created_at DESC
         LIMIT 25
         "#,
         list_id
