@@ -16,7 +16,7 @@
     "migrate:run": "cd packages/server && cargo sqlx migrate run",
     "migrate:create": "cd packages/server && cargo sqlx migrate add -r",
     "db:create": "cd packages/server && cargo sqlx database create",
-    "build:start": "pnpm build && pnpm start"
+    "build:start": "pnpm build & pnpm start"
   },
   "keywords": [],
   "author": "",
