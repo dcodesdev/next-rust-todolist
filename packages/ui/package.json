@@ -25,6 +25,7 @@
     "react-hook-form": "^7.49.3",
     "react-query": "^3.39.3",
     "server": "workspace:*",
+    "sonner": "^1.3.1",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"
