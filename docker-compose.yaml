@@ -1,0 +1,16 @@
+version: "3.1"
+
+services:
+  server-rust:
+    build: .
+    ports:
+      - "21000:5000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/next_rust_todolist
+
+  postgres:
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: next_rust_todolist
