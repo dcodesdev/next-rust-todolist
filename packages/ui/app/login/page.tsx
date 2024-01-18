@@ -1,6 +1,6 @@
-"use client"
-import { Container } from "@/components/Container"
-import { Button } from "@/components/ui/button"
+"use client";
+import { Container } from "@/components/Container";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,35 +8,35 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { FormEvent, useRef } from "react"
-import { useUserAuth } from "@/api/mutation/useUserAuth"
-import { toastError } from "@/utils/toast"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FormEvent, useRef } from "react";
+import { useUserAuth } from "@/api/mutation/useUserAuth";
+import { toastError } from "@/utils/toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Login() {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const emailRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const { mutateAsync: loginUser, isPending: isLoggingIn } = useUserAuth()
+  const { mutateAsync: loginUser, isPending: isLoggingIn } = useUserAuth();
   const { mutateAsync: registerUser, isPending: isRegistering } =
-    useUserAuth(true)
+    useUserAuth(true);
 
   const onSubmit = (isRegister: boolean) => (e: FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const email = emailRef.current?.value
-    const password = passwordRef.current?.value
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
 
     if (isRegister) {
-      registerUser({ email, password }).catch(toastError)
+      registerUser({ email, password }).catch(toastError);
     } else {
-      loginUser({ email, password }).catch(toastError)
+      loginUser({ email, password }).catch(toastError);
     }
-  }
+  };
 
   return (
     <Container>
@@ -60,13 +60,19 @@ export default function Login() {
               <CardContent className="space-y-2">
                 <div className="space-y-1">
                   <Label htmlFor="email">Email</Label>
-                  <Input ref={emailRef} id="email" placeholder="jon@doe.com" />
+                  <Input
+                    ref={emailRef}
+                    id="email"
+                    type="email"
+                    placeholder="jon@doe.com"
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="password">Password</Label>
                   <Input
                     ref={passwordRef}
                     id="password"
+                    type="password"
                     placeholder="********"
                   />
                 </div>
@@ -131,5 +137,5 @@ export default function Login() {
         </TabsContent>
       </Tabs>
     </Container>
-  )
+  );
 }
