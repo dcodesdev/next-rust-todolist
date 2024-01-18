@@ -25,9 +25,6 @@ tower = "0.4.13"
 tower-http = { version = "0.5.1", features = ["cors"] }
 ts-rs = "7.1.0"
 uuid = { version = "1.6.1", features = ["serde", "v4"] }
-tower_governor = { git = "https://github.com/benwis/tower-governor", features = [
-  "axum",
-  "tracing",
-] }
+tower_governor = { version = "0.3.1", features = ["axum", "tracing"] }
 tracing = { version = "0.1", features = ["attributes"] }
 tracing-subscriber = "0.3"
