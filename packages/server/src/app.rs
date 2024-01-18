@@ -2,12 +2,13 @@ use crate::{error::ApiError, routes};
 use axum::{http::StatusCode, routing, Extension, Json, Router};
 use serde_json::json;
 use sqlx::postgres::{PgPool, PgPoolOptions};
+use std::sync::Arc;
 use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Clone)]
 pub struct AppState {
-    pub db: PgPool,
+    pub db: Arc<PgPool>,
 }
 
 pub async fn app() {
@@ -21,7 +22,7 @@ pub async fn app() {
 
     println!("Connected to database");
 
-    let state = ServiceBuilder::new().layer(Extension(AppState { db }));
+    let state = ServiceBuilder::new().layer(Extension(AppState { db: Arc::new(db) }));
 
     // [TODO]: Change this to only allow the frontend domain
     let cors = CorsLayer::new()

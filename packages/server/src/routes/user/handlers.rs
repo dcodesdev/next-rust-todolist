@@ -61,7 +61,7 @@ pub async fn register_user(
         body.email,
         hashed
     )
-    .fetch_one(&db)
+    .fetch_one(&*db)
     .await
     {
         Ok(u) => u,
@@ -111,7 +111,7 @@ pub async fn login_user(
         "#,
         body.email
     )
-    .fetch_one(&db)
+    .fetch_one(&*db)
     .await
     {
         Ok(u) => u,

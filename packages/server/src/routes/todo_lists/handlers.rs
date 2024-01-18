@@ -31,7 +31,7 @@ pub async fn get_todo_lists(
         "#,
         user.id
     )
-    .fetch_all(&state.db)
+    .fetch_all(&*state.db)
     .await
     {
         Ok(lists) => lists,
@@ -68,7 +68,7 @@ pub async fn create_todo_list(
         body.name,
         user.id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(list) => list,
@@ -113,7 +113,7 @@ pub async fn update_todo_list(
         user.id,
         list_id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(list) => list,
@@ -150,7 +150,7 @@ pub async fn delete_todo_list(
         user.id,
         list_id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(list) => list,
@@ -187,7 +187,7 @@ pub async fn get_todo_list_details(
         user.id,
         list_id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(list) => list,
@@ -205,7 +205,7 @@ pub async fn get_todo_list_details(
         "#,
         list_id
     )
-    .fetch_all(&state.db)
+    .fetch_all(&*state.db)
     .await
     {
         Ok(items) => items,

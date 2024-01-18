@@ -29,7 +29,7 @@ pub async fn get_todos(
         "#,
         &user.id
     )
-    .fetch_all(&state.db)
+    .fetch_all(&*state.db)
     .await
     {
         Ok(todos) => todos,
@@ -71,7 +71,7 @@ pub async fn create_todo(
         &body.list_id,
         user.id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(todo) => todo,
@@ -116,7 +116,7 @@ pub async fn update_todo(
         id,
         user.id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(todo) => todo,
@@ -146,7 +146,7 @@ pub async fn delete_todo(
         id,
         user.id
     )
-    .fetch_one(&state.db)
+    .fetch_one(&*state.db)
     .await
     {
         Ok(todo) => todo,
@@ -162,7 +162,7 @@ pub async fn delete_todo(
         id,
         user.id
     )
-    .execute(&state.db)
+    .execute(&*state.db)
     .await;
 
     match result {
