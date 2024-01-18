@@ -1,8 +1,8 @@
-"use client"
-import { useDeleteList } from "@/api/mutation/useDeleteList"
-import { useFetchLists } from "@/api/query/useFetchLists"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+"use client";
+import { useDeleteList } from "@/api/mutation/useDeleteList";
+import { useFetchLists } from "@/api/query/useFetchLists";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -10,40 +10,39 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { useModal } from "@/hooks/useModal"
-import { dayjs } from "@/utils/dayjs"
-import { toastError } from "@/utils/toast"
-import { Trash } from "lucide-react"
-import Link from "next/link"
-import { FC } from "react"
-import { GetTodoListsResponse } from "server"
-import { toast } from "sonner"
+} from "@/components/ui/dialog";
+import { useModal } from "@/hooks/useModal";
+import { dayjs } from "@/utils/dayjs";
+import { toastError } from "@/utils/toast";
+import { Trash } from "lucide-react";
+import Link from "next/link";
+import { FC } from "react";
+import { GetTodoListsResponse } from "server";
+import { toast } from "sonner";
 
 export const ListItem: FC<{
-  list: GetTodoListsResponse["data"][0]
+  list: GetTodoListsResponse["data"][0];
 }> = ({ list }) => {
-  const { close, isOpen, open, setIsOpen } = useModal()
+  const { close, isOpen, open, setIsOpen } = useModal();
 
-  const { mutateAsync: deleteList } = useDeleteList(list.id)
-  const { refetch } = useFetchLists()
+  const { mutateAsync: deleteList } = useDeleteList(list.id);
+  const { refetch } = useFetchLists();
 
   const onPress = () => {
     deleteList()
       .then(() => {
-        toast.success("List deleted successfully")
-        refetch()
-        close()
+        toast.success("List deleted successfully");
+        refetch();
+        close();
       })
-      .catch(toastError)
-  }
+      .catch(toastError);
+  };
 
   return (
-    <Card className="flex items-center justify-between p-2 gap-2 cursor-pointer hover:bg-slate-900">
+    <Card className="flex items-center justify-between p-2 gap-2 cursor-pointer dark:hover:bg-slate-900">
       <Link className="w-full" href={`/dashboard/lists/${list.id}`}>
         <div>
           <p>{list.name}</p>
-
           <small className="text-gray-400">
             {dayjs(list.created_at).fromNow()}
           </small>
@@ -72,5 +71,5 @@ export const ListItem: FC<{
         </DialogContent>
       </Dialog>
     </Card>
-  )
-}
+  );
+};
