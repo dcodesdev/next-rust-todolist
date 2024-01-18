@@ -88,10 +88,11 @@ This project is a simple todo list app written in Rust. It is a learning project
 ### UI
 
 - [ ] Home page
-- [ ] Register/Login pages
-- [ ] Create a todo list
-- [ ] Add a todo item
+- [x] Register/Login pages
+- [x] Create a todo list
+- [x] Add a todo item
 - [ ] Remove a todo item
+- [x] Set a todo item as done
 
 ## Packages
 
