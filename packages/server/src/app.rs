@@ -1,5 +1,11 @@
 use crate::{error::ApiError, routes};
-use axum::{http::StatusCode, routing, Extension, Json, Router};
+use axum::{
+    http::{
+        header::{AUTHORIZATION, CONTENT_TYPE},
+        StatusCode,
+    },
+    routing, Extension, Json, Router,
+};
 use serde_json::json;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::{net::SocketAddr, sync::Arc, time::Duration};
@@ -28,15 +34,19 @@ pub async fn app() {
 
     let state = ServiceBuilder::new().layer(Extension(AppState { db: Arc::new(db) }));
 
+    let client_url = &*std::env::var("CLIENT_URL")
+        .ok()
+        .unwrap_or("http://localhost:3000".to_string());
+
     // [TODO]: Change this to only allow the frontend domain
     let cors = CorsLayer::new()
-        .allow_headers(Any)
+        .allow_headers([AUTHORIZATION, CONTENT_TYPE])
         .allow_methods(Any)
-        .allow_origin(Any);
+        .allow_origin([client_url.parse().unwrap()]);
 
     let governor_conf = Box::new(
         GovernorConfigBuilder::default()
-            .per_second(2)
+            .per_second(1)
             .burst_size(15)
             .finish()
             .unwrap(),
