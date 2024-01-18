@@ -13,7 +13,7 @@ pub async fn auth(
     mut req: Request,
     next: Next,
 ) -> ApiResult<Response> {
-    let db = state.db;
+    let db = &*state.db;
 
     let auth_header = req
         .headers()
@@ -38,7 +38,7 @@ pub async fn auth(
         "SELECT id, name, email, created_at, updated_at FROM users WHERE id = $1",
         &user_id
     )
-    .fetch_optional(&db)
+    .fetch_optional(db)
     .await;
 
     let user = match user {
