@@ -2,8 +2,9 @@ use crate::{error::ApiError, routes};
 use axum::{http::StatusCode, routing, Extension, Json, Router};
 use serde_json::json;
 use sqlx::postgres::{PgPool, PgPoolOptions};
-use std::sync::Arc;
+use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
+use tower_governor::{governor::GovernorConfigBuilder, GovernorLayer};
 use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Clone)]
@@ -12,6 +13,9 @@ pub struct AppState {
 }
 
 pub async fn app() {
+    let subscriber = tracing_subscriber::FmtSubscriber::new();
+    tracing::subscriber::set_global_default(subscriber).unwrap();
+
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
 
     let db = PgPoolOptions::new()
@@ -20,7 +24,7 @@ pub async fn app() {
         .await
         .expect("could not connect to database_url");
 
-    println!("Connected to database");
+    tracing::info!("Connected to database");
 
     let state = ServiceBuilder::new().layer(Extension(AppState { db: Arc::new(db) }));
 
@@ -29,6 +33,24 @@ pub async fn app() {
         .allow_headers(Any)
         .allow_methods(Any)
         .allow_origin(Any);
+
+    let governor_conf = Box::new(
+        GovernorConfigBuilder::default()
+            .per_second(2)
+            .burst_size(15)
+            .finish()
+            .unwrap(),
+    );
+
+    let governor_limiter = governor_conf.limiter().clone();
+    let interval = Duration::from_secs(60);
+
+    // a separate background task to clean up
+    std::thread::spawn(move || loop {
+        std::thread::sleep(interval);
+        tracing::info!("rate limiting storage size: {}", governor_limiter.len());
+        governor_limiter.retain_recent();
+    });
 
     let app: Router = Router::new()
         .fallback_service(routing::any(|| async {
@@ -51,11 +73,21 @@ pub async fn app() {
             }),
         )
         .layer(state)
+        .layer(GovernorLayer {
+            config: Box::leak(governor_conf),
+        })
         .layer(cors);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:5000").await.unwrap();
+    let addr = SocketAddr::from(([127, 0, 0, 1], 5000));
 
-    println!("Listening on http://localhost:5000");
+    let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
 
-    axum::serve(listener, app).await.unwrap();
+    tracing::info!("Listening on http://localhost:5000");
+
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<SocketAddr>(),
+    )
+    .await
+    .unwrap();
 }
