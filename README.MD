@@ -3,7 +3,7 @@
 <!-- Logo centered -->
 
 <p align="center">
-  <img src="packages/ui/public/logo.png" alt="Next Rust Todo list app" width="300" style="border-radius: 30px;" />
+  <img src="apps/ui/public/logo.png" alt="Next Rust Todo list app" width="300" style="border-radius: 30px;" />
 
 </p>
 
@@ -17,7 +17,7 @@ This project is a simple todo list app written in Rust. It is a learning project
   cargo install sqlx-cli --no-default-features --features postgres
   ```
 
-- Create a `.env` file in the `packages/server` folder and add the following:
+- Create a `.env` file in the `apps/server` folder and add the following:
 
   ```bash
   DATABASE_URL="postgresql://postgres:password@localhost:5432/next-rust-todolist"
@@ -96,8 +96,8 @@ This project is a simple todo list app written in Rust. It is a learning project
 
 ## Packages
 
-- [Server](/packages/server/)
-- [UI](/packages/ui/)
+- [Server](/apps/server/)
+- [UI](/apps/ui/)
 
 ## License
 
