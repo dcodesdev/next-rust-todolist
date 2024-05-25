@@ -45,6 +45,6 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd apps/next-rust-todolist
-            git checkout .
-            git pull
+            git fetch origin main
+            git reset --hard ${{ github.sha }}
             docker-compose up -d --build
