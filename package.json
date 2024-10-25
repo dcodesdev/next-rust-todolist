@@ -4,18 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:server": "cd packages/server && cargo watch -q -c -x run",
-    "dev:ui": "cd packages/ui && pnpm dev",
+    "dev:server": "cd apps/rust-backend && cargo watch -q -c -x run",
+    "dev:ui": "cd apps/web && pnpm dev",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm dev:server\" \"pnpm dev:ui\"",
-    "build:ui": "cd packages/ui && pnpm build",
-    "build:server": "cd packages/server && cargo build --release",
+    "build:ui": "cd apps/web && pnpm build",
+    "build:server": "cd apps/rust-backend && cargo build --release",
     "build": "pnpm build:ui & pnpm build:server",
-    "start:server": "cd packages/server && cargo run --release",
-    "start:ui": "cd packages/ui && pnpm start",
+    "start:server": "cd apps/rust-backend && cargo run --release",
+    "start:ui": "cd apps/web && pnpm start",
     "start": "concurrently -k -p \"[{name}]\" -n \"Server,UI\" -c \"yellow.bold,cyan.bold\" \"pnpm start:server\" \"pnpm start:ui\"",
-    "migrate:run": "cd packages/server && cargo sqlx migrate run",
-    "migrate:create": "cd packages/server && cargo sqlx migrate add -r",
-    "db:create": "cd packages/server && cargo sqlx database create",
+    "migrate:run": "cd apps/rust-backend && cargo sqlx migrate run",
+    "migrate:create": "cd apps/rust-backend && cargo sqlx migrate add -r",
+    "db:create": "cd apps/rust-backend && cargo sqlx database create",
     "build:start": "pnpm build && pnpm start",
     "prepare": "husky install"
   },
@@ -33,5 +33,6 @@
     "*.{js,jsx,ts,tsx,md,json}": [
       "prettier --write"
     ]
-  }
+  },
+  "packageManager": "pnpm@9.12.2"
 }
