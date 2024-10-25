@@ -28,23 +28,23 @@ jobs:
       - name: Build Rust
         run: cargo build --release --manifest-path ./apps/rust-backend/Cargo.toml
 
-      - name: Copy file via scp
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          source: "apps/rust-backend/target/release/rust-backend"
-          target: "~/apps/next-rust-todolist/apps/rust-backend/target/release/"
-          strip_components: 4
-
-      - uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          script: |
-            cd apps/next-rust-todolist
-            git checkout .
-            git pull
-            docker-compose up -d --build
+      # - name: Copy file via scp
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.IP }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.KEY }}
+      #     source: "apps/rust-backend/target/release/rust-backend"
+      #     target: "~/apps/next-rust-todolist/apps/rust-backend/target/release/"
+      #     strip_components: 4
+      #
+      # - uses: appleboy/ssh-action@v1.0.0
+      #   with:
+      #     host: ${{ secrets.IP }}
+      #     username: ${{ secrets.USERNAME }}
+      #     key: ${{ secrets.KEY }}
+      #     script: |
+      #       cd apps/next-rust-todolist
+      #       git checkout .
+      #       git pull
+      #       docker-compose up -d --build
