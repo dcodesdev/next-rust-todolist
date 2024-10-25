@@ -1393,6 +1393,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "rust-backend"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "bcrypt",
+ "chrono",
+ "dotenvy",
+ "jsonwebtoken",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "tokio",
+ "tower",
+ "tower-http",
+ "tower_governor",
+ "tracing",
+ "tracing-subscriber",
+ "ts-rs",
+ "uuid",
+]
+
+[[package]]
 name = "rustc-demangle"
 version = "0.1.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1480,28 +1502,6 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
-]
-
-[[package]]
-name = "server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "bcrypt",
- "chrono",
- "dotenvy",
- "jsonwebtoken",
- "serde",
- "serde_json",
- "sqlx",
- "tokio",
- "tower",
- "tower-http",
- "tower_governor",
- "tracing",
- "tracing-subscriber",
- "ts-rs",
- "uuid",
 ]
 
 [[package]]
